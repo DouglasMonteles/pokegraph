@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { GraphVisualizator } from "./components/GraphVisualizator";
 import { Pokemon } from "./models/pokemon.model";
 import { Trainer } from "./models/trainer.model";
 import { GraphService } from "./services/graph.service";
@@ -36,13 +37,7 @@ function App() {
   }, []);
 
   return (
-    <ul>
-      {
-        pokemons.map(pokemon => (
-          <li key={pokemon.id}>Name: {pokemon.name} - Type: {pokemon.type}</li>
-        ))
-      }
-    </ul>
+    <GraphVisualizator />
   );
 }
 

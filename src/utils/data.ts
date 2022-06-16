@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { Pokemon } from "../models/pokemon.model";
 import { Trainer } from "../models/trainer.model";
 
@@ -7,6 +8,8 @@ const trainers: Array<Trainer> = [
   { id: 3, name: 'Maria', },
   { id: 4, name: 'Carlos', },
 ];
+
+console.log(trainers);
 
 const conections = [
   { trainer_id: 1, pokemon_id: 1, },
