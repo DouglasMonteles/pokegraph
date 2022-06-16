@@ -1,26 +1,38 @@
 import { useEffect, useState } from "react";
 import { Pokemon } from "./models/pokemon.model";
+import { Trainer } from "./models/trainer.model";
 import { GraphService } from "./services/graph.service";
-import PokemonService from "./services/pokemon.service";
+import { PokemonService } from "./services/pokemon.service";
+import { TrainerService } from "./services/trainer.service";
+import { conections } from "./utils/data";
 
 function App() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [trainers, setTrainers] = useState<Trainer[]>([]);
 
   useEffect(() => {
-    const pokemons = PokemonService.findAll();
+    const ps = new PokemonService();
+    const ts = new TrainerService();
+    const g = new GraphService(4);
+
+    const pokemons = ps.findAll();
     setPokemons(pokemons);
 
-    const gs = new GraphService(7);
+    const trainers = ts.findAll();
+    setTrainers(trainers);
 
-    gs.addEdge(1, 2);
-    gs.addEdge(1, 5);
-    gs.addEdge(2, 3);
-    gs.addEdge(2, 5);
-    gs.addEdge(3, 4);
-    gs.addEdge(4, 5);
-    gs.addEdge(4, 6);
+    conections.forEach(c => {
+      g.addEdge(c.trainer_id, c.pokemon_id);
+    });
 
-    gs.bfs(1);
+    console.log("GRAFO")
+    console.log(g.graph);
+
+    console.log('BFS');
+    g.bfs(3); // trainer_id
+
+    console.log('DFS');
+    g.dfs(3); // trainer_id
   }, []);
 
   return (

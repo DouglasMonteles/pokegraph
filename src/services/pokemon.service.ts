@@ -1,12 +1,16 @@
 import { Pokemon } from "../models/pokemon.model";
-import data from "../utils/data";
+import { pokemons } from "../utils/data";
 
-const PokemonService = {
+export class PokemonService {
 
-  findAll(): Array<Pokemon> {
-    return data;
+  private pokemons: Pokemon[];
+
+  constructor() {
+    this.pokemons = pokemons;
   }
 
-};
+  findAll(): Array<Pokemon> {
+    return this.pokemons;
+  }
 
-export default PokemonService;
+}

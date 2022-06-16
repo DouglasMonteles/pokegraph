@@ -1,63 +1,80 @@
 export class GraphService {
 
-  graph: Array<any>;
-  visited: Array<boolean>;
-  numOfNodes: number;
+  private vertex: number;       // number of vertices in the graph
+  private adj: Array<number>[]; // adjacent list
 
-  constructor(numOfNodes: number) {
-    this.numOfNodes = numOfNodes;
-    this.graph = this.graphInit();
-    this.visited = new Array<boolean>(this.numOfNodes);
+  constructor(vertex: number) {
+    this.vertex = vertex;
+    this.adj = new Array(this.vertex);
+
+    for (let i = 0; i < vertex; ++i) {
+      this.adj[i] = [];
+    }
   }
 
-  public bfs(node: any): void {
-    const queue = [];
+  // Add a edge to the graph
+  public addEdge(v: number, w: number): void {
+    this.adj[v].push(w);
+  }
 
-    for (let i = 0; i < this.visited.length; i++) {
-      this.visited[i] = false;
+  // BFS from a given source s
+  public bfs(s: number): void {
+    const visited: Array<boolean> = new Array(this.vertex);
+    const queue: Array<number> = [];
+
+    for (let i = 0; i < visited.length; i++) {
+      visited[i] = false;
     }
 
-    this.visited[node] = true;
-    queue.push(node); // start with root
+    visited[s] = true;
+    queue.push(s);
+    
+    while (queue.length !== 0) {
+      const elem = queue.shift() as number;
+      console.log(elem)
+      const arr = this.adj[elem];
 
-    while (queue.length) {
-      let currNode = queue.shift(); // process a node
+      if (!arr) return;
 
-      console.log(`visiting ${currNode}`);
-      for (let j = 0; j < this.graph[currNode].length; j++) {
-        if (this.graph[currNode][j] === 1 && this.visited[j] === false) {
-          // if there's a connection, visit it and record it
-          this.visited[j] = true;
-          queue.push(j);
+      for (let i of arr) {
+        if (!visited[i]) {
+          visited[i] = true;
+          queue.push(i);
         }
       }
     }
   }
 
-  public addEdge(a: any, b: any) {
-    for (let i = 0; i < this.graph.length; i++) {
-      for (let j = 0; j < this.graph[i].length; j++) {
-        if (i === a && j === b) {
-          this.graph[i][j] = 1;
-          this.graph[j][i] = 1;
-        }
+  public dfs(v: number): void {
+    const visited = new Array(this.vertex);
+
+    for (let i = 0; i < visited.length; i++) {
+      visited[i] = false;
+    }
+
+    this._dfsUtil(v, visited);
+  }
+
+  private _dfsUtil(v: number, visited: Array<boolean>): void {
+    visited[v] = true;
+
+    console.log(v);
+    
+    if (!this.adj[v]) return;
+
+    for (let i of this.adj[v]) {
+      let n = i;
+      if (!visited[n]) {
+        this._dfsUtil(n, visited);
       }
     }
-  };
+  }
 
-  private graphInit(): Array<any> {
-    const graph = new Array(this.numOfNodes);
-    for (let i = 0; i < graph.length; i++) {
-      graph[i] = new Array(this.numOfNodes);
-    }
-
-    for (let i = 0; i < graph.length; i++) {
-      for (let j = 0; j < graph[i].length; j++) {
-        graph[i][j] = 0;
-      }
-    }
-
-    return graph;
+  get graph(): Object {
+    return {
+      vertex: this.vertex,
+      adj: this.adj,
+    };
   }
 
 }
