@@ -1,74 +1,75 @@
 export class GraphService {
 
   private vertex: number;       // number of vertices in the graph
-  private adj: Array<number>[]; // adjacent list
+  private adj: Map<string, Array<string>>; // adjacent list
 
   constructor(vertex: number) {
     this.vertex = vertex;
-    this.adj = new Array(this.vertex);
-
-    for (let i = 0; i < vertex; ++i) {
-      this.adj[i] = [];
-    }
+    this.adj = new Map<string, Array<string>>();
   }
 
   // Add a edge to the graph
-  public addEdge(v: number, w: number): void {
-    this.adj[v].push(w);
+  public addEdge(v: string, w: string): void {
+    const values = this.adj.get(v) ?? [];
+    this.adj.set(v, [...values, w]);
   }
 
   // BFS from a given source s
-  public bfs(s: number): void {
+  public bfs(s: string): Array<string> {
+    const result: string[] = [];
     const visited: Array<boolean> = new Array(this.vertex);
-    const queue: Array<number> = [];
+    const queue: Array<string> = [];
 
     for (let i = 0; i < visited.length; i++) {
       visited[i] = false;
     }
 
-    visited[s] = true;
+    visited[s as any] = true;
     queue.push(s);
     
     while (queue.length !== 0) {
-      const elem = queue.shift() as number;
+      const elem = queue.shift() as string;
       console.log(elem)
-      const arr = this.adj[elem];
+      result.push(elem);
+      const arr = this.adj.get(elem);
 
-      if (!arr) return;
-
-      for (let i of arr) {
-        if (!visited[i]) {
-          visited[i] = true;
-          queue.push(i);
+      if (arr) {
+        for (let i of arr) {
+          if (!visited[i as any]) {
+            visited[i as any] = true;
+            queue.push(i);
+          }
         }
       }
     }
+
+    return result;
   }
 
-  public dfs(v: number): void {
-    const visited = new Array(this.vertex);
+  // public dfs(v: number): void {
+  //   const visited = new Array(this.vertex);
 
-    for (let i = 0; i < visited.length; i++) {
-      visited[i] = false;
-    }
+  //   for (let i = 0; i < visited.length; i++) {
+  //     visited[i] = false;
+  //   }
 
-    this._dfsUtil(v, visited);
-  }
+  //   this._dfsUtil(v, visited);
+  // }
 
-  private _dfsUtil(v: number, visited: Array<boolean>): void {
-    visited[v] = true;
+  // private _dfsUtil(v: number, visited: Array<boolean>): void {
+  //   visited[v] = true;
 
-    console.log(v);
+  //   console.log(v);
     
-    if (!this.adj[v]) return;
+  //   if (!this.adj[v]) return;
 
-    for (let i of this.adj[v]) {
-      let n = i;
-      if (!visited[n]) {
-        this._dfsUtil(n, visited);
-      }
-    }
-  }
+  //   for (let i of this.adj[v]) {
+  //     let n = i;
+  //     if (!visited[n]) {
+  //       this._dfsUtil(n, visited);
+  //     }
+  //   }
+  // }
 
   get graph(): Object {
     return {
