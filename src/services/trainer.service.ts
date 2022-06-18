@@ -3,14 +3,10 @@ import { trainers } from "../utils/data";
 
 export class TrainerService {
 
-  private trainers: Trainer[];
-
-  constructor() {
-    this.trainers = trainers;
-  }
+  constructor() {}
 
   findAll(): Array<Trainer> {
-    return this.trainers;
+    return trainers;
   }
 
 }

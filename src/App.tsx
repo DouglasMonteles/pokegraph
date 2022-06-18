@@ -14,7 +14,8 @@ function App() {
   useEffect(() => {
     const ps = new PokemonService();
     const ts = new TrainerService();
-    const g = new GraphService(8);
+    const gTreinadorPokemon = new GraphService(8);
+    const gPokemonTreinador = new GraphService(8);
 
     const pokemons = ps.findAll();
     setPokemons(pokemons);
@@ -23,17 +24,20 @@ function App() {
     setTrainers(trainers);
 
     conections.forEach(c => {
-      g.addEdge(c.trainer_name, c.pokemon_name);
+      gTreinadorPokemon.addEdge(c.trainer_name, c.pokemon_name);
+      gPokemonTreinador.addEdge(c.pokemon_name, c.trainer_name);
     });
 
     //console.log("GRAFO")
     //console.log(g.graph);
 
-    // console.log('BFS');
-    // g.bfs('Douglas'); // trainer_id
+    console.log('BFS');
+    gTreinadorPokemon.bfs('Douglas'); // trainer_id
+    gPokemonTreinador.bfs('Pikachu'); // pokemon_id
 
-    //console.log('DFS');
-    //g.dfs(3); // trainer_id
+    console.log('DFS');
+    gTreinadorPokemon.dfs("Douglas"); // trainer_id
+    gPokemonTreinador.dfs('Pikachu'); // pokemon_id
   }, []);
 
   return (

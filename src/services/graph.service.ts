@@ -46,30 +46,27 @@ export class GraphService {
     return result;
   }
 
-  // public dfs(v: number): void {
-  //   const visited = new Array(this.vertex);
+  public dfs(v: string): Array<string> {
+    const visited = new Map<string, boolean>();
+    const result: Array<string> = [];
 
-  //   for (let i = 0; i < visited.length; i++) {
-  //     visited[i] = false;
-  //   }
+    this._dfsUtil(v, visited, result);
+    return result;
+  }
 
-  //   this._dfsUtil(v, visited);
-  // }
+  private _dfsUtil(v: string, visited: Map<string, boolean>, result: Array<string>): void {
+    visited.set(v, true);
 
-  // private _dfsUtil(v: number, visited: Array<boolean>): void {
-  //   visited[v] = true;
+    console.log(v);
+    result.push(v);
 
-  //   console.log(v);
-    
-  //   if (!this.adj[v]) return;
-
-  //   for (let i of this.adj[v]) {
-  //     let n = i;
-  //     if (!visited[n]) {
-  //       this._dfsUtil(n, visited);
-  //     }
-  //   }
-  // }
+    for (let i of this.adj.get(v) ?? []) {
+      let n = i;
+      if (!visited.get(n)) {
+        this._dfsUtil(n, visited, result);
+      }
+    }
+  }
 
   get graph(): Object {
     return {

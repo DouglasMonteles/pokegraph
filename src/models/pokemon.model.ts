@@ -3,3 +3,8 @@ export interface Pokemon {
   type: string;
   image: string;
 }
+
+export interface TypeAdvantage {
+  type: string;
+  advantage: string;
+}

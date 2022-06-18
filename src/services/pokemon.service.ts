@@ -1,16 +1,20 @@
-import { Pokemon } from "../models/pokemon.model";
-import { pokemons } from "../utils/data";
+import { Pokemon, TypeAdvantage } from "../models/pokemon.model";
+import { pokemons, types, typesAdvantage } from "../utils/data";
 
 export class PokemonService {
 
-  private pokemons: Pokemon[];
-
-  constructor() {
-    this.pokemons = pokemons;
-  }
+  constructor() {}
 
   findAll(): Array<Pokemon> {
-    return this.pokemons;
+    return pokemons;
+  }
+
+  findAllTypes(): string[] {
+    return types;
+  }
+
+  findAllTypesAdvantage(): Array<TypeAdvantage> {
+    return typesAdvantage;
   }
 
 }
