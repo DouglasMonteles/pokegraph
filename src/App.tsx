@@ -1,47 +1,72 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { GraphVisualizator } from "./components/GraphVisualizator";
 import { Pokemon } from "./models/pokemon.model";
 import { Trainer } from "./models/trainer.model";
 import { GraphService } from "./services/graph.service";
 import { PokemonService } from "./services/pokemon.service";
 import { TrainerService } from "./services/trainer.service";
-import { conections } from "./utils/data";
+import { conections, pokemons } from "./utils/data";
 
 function App() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [trainers, setTrainers] = useState<Trainer[]>([]);
+  const [graphData, setGraphData] = useState<any[]>([]);
+
+  const ps = new PokemonService();
+  const ts = new TrainerService();
+
+  function setNode(id: string, label: string, image: string = ''): Object {
+    const node = {
+      data: {
+        id,
+        label,
+        image,
+      },
+
+      position: {
+        x: Math.floor(Math.random() * 390),
+        y: Math.floor(Math.random() * 390),
+      }      
+    };
+
+    return node;
+  }
+
+  function setEdge(source: string, target: string): Object {
+    const edge = {
+      data: {
+        source,
+        target,
+        label: `${source} -> ${target}`,
+      }
+    };
+
+    return edge;
+  }
 
   useEffect(() => {
-    const ps = new PokemonService();
-    const ts = new TrainerService();
-    const gTreinadorPokemon = new GraphService(8);
-    const gPokemonTreinador = new GraphService(8);
+    const data = [] as any;
 
-    const pokemons = ps.findAll();
-    setPokemons(pokemons);
-
-    const trainers = ts.findAll();
-    setTrainers(trainers);
-
-    conections.forEach(c => {
-      gTreinadorPokemon.addEdge(c.trainer_name, c.pokemon_name);
-      gPokemonTreinador.addEdge(c.pokemon_name, c.trainer_name);
+    ps.findAll().forEach(p => {
+      data.push(setNode(p.name, p.name, p.image));
     });
 
-    //console.log("GRAFO")
-    //console.log(g.graph);
+    ts.findAll().forEach(t => {
+      data.push(setNode(t.name, t.name, t.image));
+    });
 
-    console.log('BFS');
-    gTreinadorPokemon.bfs('Douglas'); // trainer_id
-    gPokemonTreinador.bfs('Pikachu'); // pokemon_id
+    conections.forEach(c => {
+      data.push(setEdge(c.trainer_name, c.pokemon_name));
+    });
 
-    console.log('DFS');
-    gTreinadorPokemon.dfs("Douglas"); // trainer_id
-    gPokemonTreinador.dfs('Pikachu'); // pokemon_id
+    setGraphData(data);
   }, []);
 
   return (
-    <GraphVisualizator />
+    <GraphVisualizator 
+      title={'PokeGraph'}
+      graphData={graphData}
+    />
   );
 }
 
