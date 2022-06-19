@@ -8,6 +8,35 @@ export class GraphService {
     this.adj = new Map<string, Array<string>>();
   }
 
+  public static setNode(id: string, label: string, image: string = ''): Object {
+    const node = {
+      data: {
+        id,
+        label,
+        image,
+      },
+
+      position: {
+        x: Math.floor(Math.random() * 390),
+        y: Math.floor(Math.random() * 390),
+      }      
+    };
+
+    return node;
+  }
+
+  public static setEdge(source: string, target: string): Object {
+    const edge = {
+      data: {
+        source,
+        target,
+        label: `${source} -> ${target}`,
+      }
+    };
+
+    return edge;
+  }
+
   // Add a edge to the graph
   public addEdge(v: string, w: string): void {
     const values = this.adj.get(v) ?? [];

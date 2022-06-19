@@ -1,5 +1,5 @@
-import { Trainer } from "../models/trainer.model";
-import { trainers } from "../utils/data";
+import { Trainer, TrainerConnection } from "../models/trainer.model";
+import { connections, trainers } from "../utils/data";
 
 export class TrainerService {
 
@@ -7,6 +7,10 @@ export class TrainerService {
 
   findAll(): Array<Trainer> {
     return trainers;
+  }
+
+  findAllConnections(): Array<TrainerConnection> {
+    return connections;
   }
 
 }
