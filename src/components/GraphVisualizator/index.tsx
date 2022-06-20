@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import CytoscapeComponent from 'react-cytoscapejs';
 
 import './styles.css';
@@ -9,9 +8,7 @@ interface GraphVisualizatorProps {
 }
 
 export function GraphVisualizator({ title, graphData } : GraphVisualizatorProps) {
-  const [width, setWith] = useState("100%");
-  const [height, setHeight] = useState("500px");
-
+  
   return (
     <>
       <div>
@@ -24,7 +21,7 @@ export function GraphVisualizator({ title, graphData } : GraphVisualizatorProps)
         >
           <CytoscapeComponent
             elements={graphData}
-            style={{ width: width, height: height }}
+            style={{ width: "100%", height: "500px" }}
             layout={{
               name: 'breadthfirst',
               fit: true,

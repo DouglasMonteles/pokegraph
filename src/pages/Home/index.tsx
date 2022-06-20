@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { Link, useNavigate, useRoutes } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { StorageService } from '../../services/storage.service';
 import { TrainerService } from '../../services/trainer.service';
 import './styles.css';
