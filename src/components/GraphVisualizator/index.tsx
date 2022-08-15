@@ -1,3 +1,5 @@
+import cytoscape from 'cytoscape';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import CytoscapeComponent from 'react-cytoscapejs';
 
 import './styles.css';
@@ -8,7 +10,12 @@ interface GraphVisualizatorProps {
 }
 
 export function GraphVisualizator({ title, graphData } : GraphVisualizatorProps) {
-  
+  const [layout, setLayout] = useState('');
+
+  useEffect(() => {
+    setLayout('breadthfirst');
+  }, []);
+
   return (
     <>
       <div>
@@ -21,9 +28,12 @@ export function GraphVisualizator({ title, graphData } : GraphVisualizatorProps)
         >
           <CytoscapeComponent
             elements={graphData}
-            style={{ width: "100%", height: "500px" }}
+            style={{ 
+              width: "100%", 
+              height: "500px" 
+            }}
             layout={{
-              name: 'breadthfirst',
+              name: !layout ? 'concentric' : layout,
               fit: true,
               directed: true,
               padding: 50,

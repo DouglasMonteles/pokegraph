@@ -16,10 +16,10 @@ export class GraphService {
         image,
       },
 
-      position: {
-        x: Math.floor(Math.random() * 390),
-        y: Math.floor(Math.random() * 390),
-      }      
+      // position: {
+      //   x: Math.floor(Math.random() * 390),
+      //   y: Math.floor(Math.random() * 390),
+      // }      
     };
 
     return node;
